@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { getCategories } from '../services/api';
-
-// input.addEventListener("keypress", function (event) {
-//   // If the user presses the "Enter" key on the keyboard
-//   if (event.key === "Enter") {
-//     // Cancel the default action, if needed
-//     event.preventDefault();
-//     // Trigger the button element with a click
-//     document.getElementById("myBtn").click();
-//   }
-// });
+import ProductCard from '../Components/ProductCard';
 
 class Main extends Component {
   state = {
     input: '',
+    products: [],
+  };
+
+  search = async () => {
+    const { input } = this.state;
+    const response = await getCategories(input);
+    this.setState({
+      products: response,
+    });
   };
 
   handleChange = ({ target }) => {
@@ -23,15 +23,8 @@ class Main extends Component {
     });
   };
 
-  search = async (evt) => {
-    if (evt.key === 'Enter') {
-      evt.preventDefault();
-      await getCategories(evt.target.value);
-    }
-  };
-
   render() {
-    const { input } = this.state;
+    const { input, products } = this.state;
     return (
       <form>
         <label htmlFor="home-initial-message">
@@ -39,19 +32,26 @@ class Main extends Component {
             data-testid="home-initial-message"
             onChange={ this.handleChange }
             placeholder="Search"
-            keypress={ this.search }
             value={ input }
             type="text"
             id="home-initial-message"
           />
-          {/* <button
+          <button
             type="submit"
             onClick={ this.search }
           >
             Search
-          </button> */}
+          </button>
         </label>
-        { }
+        <ul>
+          {products.length > 0
+            ? products.map((productCard) => (
+              <ProductCard
+                key={ productCard }
+                product={ productCard }
+              />))
+            : 'Digite algum termo de pesquisa ou escolha uma categoria.'}
+        </ul>
       </form>
     );
   }
