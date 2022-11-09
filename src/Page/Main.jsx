@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-// import { getCategories } from '../services/api';
+import { getCategories } from '../services/api';
 // import ProductCard from '../Components/ProductCard';
 
 class Main extends Component {
-  // state = {
-  //   input: '',
-  //   products: [],
-  // };
+  state = {
+    categories: [],
+    // products: [],
+  };
 
+  componentDidMount() {
+    this.fetchGetCategories();
+  }
+
+  fetchGetCategories = async () => {
+    const response = await getCategories();
+    this.setState({ categories: response });
+  };
   // search = async () => {
   //   const { input } = this.state;
-  //   const response = await getCategories(input);
   //   this.setState({
   //     products: response,
   //   });
@@ -24,28 +31,32 @@ class Main extends Component {
   // };
 
   render() {
-    // const { input, products } = this.state;
+    const { categories } = this.state;
+    const showCategories = categories
+      .map(({ name }, i) => (
+        <button key={ i } type="submit" data-testid="category">{name}</button>));
     return (
-      <form>
-        <label htmlFor="home-initial-message">
-          <input
+      <div>
+        <form>
+          <label htmlFor="home-initial-message">
+            <input
             // onChange={ this.handleChange }
-            placeholder="Search"
-            // value={ input }
-            type="text"
-            id="home-initial-message"
-          />
-          <button
-            type="submit"
+              placeholder="Search"
+              // value={ input }
+              type="text"
+              id="home-initial-message"
+            />
+            <button
+              type="submit"
             // onClick={ this.search }
-          >
-            Search
-          </button>
-        </label>
-        <p data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </p>
-        {/* <ul>
+            >
+              Search
+            </button>
+          </label>
+          <p data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </p>
+          {/* <ul>
           {products.length > 0
             ? products.map((productCard) => (
               <ProductCard
@@ -54,7 +65,9 @@ class Main extends Component {
               />))
             : 'Digite algum termo de pesquisa ou escolha uma categoria.'}
         </ul> */}
-      </form>
+          {showCategories}
+        </form>
+      </div>
     );
   }
 }
