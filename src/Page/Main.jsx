@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { getCategories } from '../services/api';
 // import ProductCard from '../Components/ProductCard';
 
@@ -67,6 +68,11 @@ class Main extends Component {
         </ul> */}
           {showCategories}
         </form>
+        <div>
+          <Link to="/cart" data-testid="shopping-cart-button">
+            <i className="fa-solid fa-cart-shopping" />
+          </Link>
+        </div>
       </div>
     );
   }
