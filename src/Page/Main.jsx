@@ -53,7 +53,7 @@ class Main extends Component {
         price={ price }
       />
     ));
-    
+
     return (
       <div>
         <Categories
