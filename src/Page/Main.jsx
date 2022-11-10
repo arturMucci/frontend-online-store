@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Categories from '../Components/Categories';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 // import ProductCard from '../Components/ProductCard';
 
@@ -40,19 +41,12 @@ class Main extends Component {
   render() {
     const { categories, products } = this.state;
     console.log(products);
-    const showCategories = categories
-      .map(({ name, id }) => (
-        <button
-          key={ id }
-          type="button"
-          data-testid="category"
-          value={ id }
-          onClick={ this.fetchCategoriesProduct }
-        >
-          {name}
-        </button>));
     return (
       <div>
+        <Categories
+          category={ categories }
+          fetchCategory={ this.fetchCategoriesProduct }
+        />
         <form>
           <label htmlFor="home-initial-message">
             <input
@@ -81,7 +75,6 @@ class Main extends Component {
               />))
             : 'Digite algu´m termo de pesquisa ou escolha uma categoria.'}
         </ul> */}
-          {showCategories}
         </form>
         <div>
           <Link to="/cart" data-testid="shopping-cart-button">
