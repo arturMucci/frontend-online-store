@@ -8,6 +8,7 @@ class Main extends Component {
     categories: [],
     inputSearch: '',
     products: [],
+    actCat: '',
   };
 
   componentDidMount() {
@@ -18,12 +19,6 @@ class Main extends Component {
     const response = await getCategories();
     this.setState({ categories: response });
   };
-  // search = async () => {
-  //   const { input } = this.state;
-  //   this.setState({
-  //     products: response,
-  //   });
-  // };
 
   handleChange = ({ target }) => {
     const { value } = target;
@@ -32,19 +27,11 @@ class Main extends Component {
     });
   };
 
-  productsAPI = async ({ target }) => {
-    const { inputSearch } = this.state;
-
-    let param;
-    if (target.className === 'searchButton') {
-      param = inputSearch;
-    } else {
-      param = target.innerText;
-    }
-
-    const productsList = await getProductsFromCategoryAndQuery(param);
+  productsAPI = async () => {
+    const { inputSearch, actCat } = this.state;
+    const param = actCat;
+    const productsList = await getProductsFromCategoryAndQuery(param, inputSearch);
     this.setState({ products: productsList.results });
-    console.log(productsList.results);
   };
 
   render() {
@@ -59,8 +46,8 @@ class Main extends Component {
           onClick={ this.productsAPI }
         >
           {name}
-
         </button>));
+
     const showProducts = products.map(({ thumbnail, title, price, id,
     }) => (
       <ProductCard
@@ -69,8 +56,8 @@ class Main extends Component {
         title={ title }
         price={ price }
       />
-
     ));
+
     return (
       <div>
         <form>
@@ -106,9 +93,7 @@ class Main extends Component {
         </ul> */}
           {showCategories}
         </form>
-        <ul>
-          { showProducts && <li>Nenhum produto foi encontrado</li>}
-        </ul>
+        {products.length ? <ul>{showProducts}</ul> : <p>Nenhum produto foi encontrado</p>}
         <div>
           <Link to="/cart" data-testid="shopping-cart-button">
             <i className="fa-solid fa-cart-shopping" />

@@ -5,7 +5,6 @@ class ProductCard extends Component {
   render() {
     const { thumbnail, title, price } = this.props;
     return (
-
       <li data-testid="product">
         <h4>
           { title }
