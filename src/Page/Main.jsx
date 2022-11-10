@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
-// import ProductCard from '../Components/ProductCard';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+import ProductCard from '../Components/ProductCard';
 
 class Main extends Component {
   state = {
     categories: [],
-    // products: [],
+    inputSearch: '',
+    products: [],
   };
 
   componentDidMount() {
@@ -24,32 +25,69 @@ class Main extends Component {
   //   });
   // };
 
-  // handleChange = ({ target }) => {
-  //   const { value } = target;
-  //   this.setState({
-  //     input: value,
-  //   });
-  // };
+  handleChange = ({ target }) => {
+    const { value } = target;
+    this.setState({
+      inputSearch: value,
+    });
+  };
+
+  productsAPI = async ({ target }) => {
+    const { inputSearch } = this.state;
+
+    let param;
+    if (target.className === 'searchButton') {
+      param = inputSearch;
+    } else {
+      param = target.innerText;
+    }
+
+    const productsList = await getProductsFromCategoryAndQuery(param);
+    this.setState({ products: productsList.results });
+    console.log(productsList.results);
+  };
 
   render() {
-    const { categories } = this.state;
+    const { categories, inputSearch, products } = this.state;
     const showCategories = categories
       .map(({ name }, i) => (
-        <button key={ i } type="submit" data-testid="category">{name}</button>));
+        <button
+          key={ i }
+          type="button"
+          className="categoryButton"
+          data-testid="category"
+          onClick={ this.productsAPI }
+        >
+          {name}
+
+        </button>));
+    const showProducts = products.map(({ thumbnail, title, price, id,
+    }) => (
+      <ProductCard
+        key={ id }
+        thumbnail={ thumbnail }
+        title={ title }
+        price={ price }
+      />
+
+    ));
     return (
       <div>
         <form>
           <label htmlFor="home-initial-message">
             <input
-            // onChange={ this.handleChange }
+              onChange={ this.handleChange }
               placeholder="Search"
-              // value={ input }
+              value={ inputSearch }
               type="text"
               id="home-initial-message"
+              data-testid="query-input"
             />
             <button
-              type="submit"
-            // onClick={ this.search }
+              className="searchButton"
+              type="button"
+              data-testid="query-button"
+              onClick={ this.productsAPI }
             >
               Search
             </button>
@@ -68,6 +106,9 @@ class Main extends Component {
         </ul> */}
           {showCategories}
         </form>
+        <ul>
+          { showProducts && <li>Nenhum produto foi encontrado</li>}
+        </ul>
         <div>
           <Link to="/cart" data-testid="shopping-cart-button">
             <i className="fa-solid fa-cart-shopping" />
