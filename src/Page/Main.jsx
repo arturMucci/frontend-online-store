@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 // import ProductCard from '../Components/ProductCard';
 
 class Main extends Component {
   state = {
     categories: [],
-    // products: [],
+    products: [],
   };
 
   componentDidMount() {
@@ -31,11 +31,26 @@ class Main extends Component {
   //   });
   // };
 
+  fetchCategoriesProduct = async (e) => {
+    const { value } = e.target;
+    const { results } = await getProductsFromCategoryAndQuery(value);
+    this.setState({ products: results });
+  };
+
   render() {
-    const { categories } = this.state;
+    const { categories, products } = this.state;
+    console.log(products);
     const showCategories = categories
-      .map(({ name }, i) => (
-        <button key={ i } type="submit" data-testid="category">{name}</button>));
+      .map(({ name, id }) => (
+        <button
+          key={ id }
+          type="button"
+          data-testid="category"
+          value={ id }
+          onClick={ this.fetchCategoriesProduct }
+        >
+          {name}
+        </button>));
     return (
       <div>
         <form>
@@ -64,7 +79,7 @@ class Main extends Component {
                 key={ productCard }
                 product={ productCard }
               />))
-            : 'Digite algum termo de pesquisa ou escolha uma categoria.'}
+            : 'Digite algu´m termo de pesquisa ou escolha uma categoria.'}
         </ul> */}
           {showCategories}
         </form>
