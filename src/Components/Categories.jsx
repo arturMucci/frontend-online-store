@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 export default class Categories extends Component {
   render() {
-    const { category, fetchCategory } = this.props;
+    const { categories, fetchCategory } = this.props;
     return (
       <div>
-        {category.map(({ name, id }) => (
+        {categories.map(({ name, id }) => (
           <button
             key={ id }
             type="button"
@@ -21,6 +21,6 @@ export default class Categories extends Component {
   }
 }
 Categories.propTypes = {
-  category: PropTypes.array,
+  categories: PropTypes.array,
   fetchCategory: PropTypes.func,
 }.isRequired;
