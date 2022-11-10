@@ -57,7 +57,7 @@ class Main extends Component {
     return (
       <div>
         <Categories
-          category={ categories }
+          categories={ categories }
           fetchCategory={ this.fetchCategoriesProduct }
         />
         <form>
