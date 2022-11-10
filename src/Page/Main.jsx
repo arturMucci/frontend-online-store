@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
+import Categories from '../Components/Categories';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from '../Components/ProductCard';
 
@@ -34,20 +36,14 @@ class Main extends Component {
     this.setState({ products: productsList.results });
   };
 
+  fetchCategoriesProduct = async (e) => {
+    const { value } = e.target;
+    const { results } = await getProductsFromCategoryAndQuery(value);
+    this.setState({ products: results });
+  };
+
   render() {
     const { categories, inputSearch, products } = this.state;
-    const showCategories = categories
-      .map(({ name }, i) => (
-        <button
-          key={ i }
-          type="button"
-          className="categoryButton"
-          data-testid="category"
-          onClick={ this.productsAPI }
-        >
-          {name}
-        </button>));
-
     const showProducts = products.map(({ thumbnail, title, price, id,
     }) => (
       <ProductCard
@@ -60,6 +56,10 @@ class Main extends Component {
 
     return (
       <div>
+        <Categories
+          category={ categories }
+          fetchCategory={ this.fetchCategoriesProduct }
+        />
         <form>
           <label htmlFor="home-initial-message">
             <input
@@ -89,9 +89,8 @@ class Main extends Component {
                 key={ productCard }
                 product={ productCard }
               />))
-            : 'Digite algum termo de pesquisa ou escolha uma categoria.'}
+            : 'Digite algu´m termo de pesquisa ou escolha uma categoria.'}
         </ul> */}
-          {showCategories}
         </form>
         {products.length ? <ul>{showProducts}</ul> : <p>Nenhum produto foi encontrado</p>}
         <div>
