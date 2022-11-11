@@ -21,7 +21,7 @@ export default class Card extends Component {
     return (
       <div>
         { products.length === 0 ? emptyCartText
-          : <div />}
+          : this.productsList()}
         <CartProduct />
       </div>
     );

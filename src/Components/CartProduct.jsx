@@ -23,7 +23,7 @@ export default class CartProduct extends Component {
 
   render() {
     const { quantity } = this.state;
-    const { thumbnail, title, price, id } = this.props;
+    const { thumbnail, title, price } = this.props;
     return (
       <div>
         <button type="button" className="btn-remove">
@@ -71,5 +71,5 @@ CartProduct.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  id: PropTypes.string.isRequired,
+  // id: PropTypes.string.isRequired,
 };
