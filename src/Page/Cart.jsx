@@ -7,6 +7,13 @@ export default class Card extends Component {
     products: [],
   };
 
+  componentDidMount() {
+    const storage = JSON.parse(localStorage.getItem('cartItems'));
+    if (storage) {
+      this.setState({ products: storage });
+    }
+  }
+
   productsList = () => {
     const { products } = this.state;
     return products.map((product) => <CartProduct key={ product.id } { ...product } />);
@@ -22,7 +29,6 @@ export default class Card extends Component {
       <div>
         { products.length === 0 ? emptyCartText
           : this.productsList()}
-        <CartProduct />
       </div>
     );
   }

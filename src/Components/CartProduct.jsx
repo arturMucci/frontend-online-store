@@ -21,15 +21,30 @@ export default class CartProduct extends Component {
     }
   };
 
+  // removeProduct = ({ target }) => {
+  //   // const prodFiltered =
+  // };
+
   render() {
     const { quantity } = this.state;
-    const { thumbnail, title, price } = this.props;
+    const { thumbnail, title, price, id } = this.props;
     return (
       <div>
-        <button type="button" className="btn-remove">
+        <button
+          type="button"
+          className="btn-remove"
+          data-testid="remove-product"
+          id={ id }
+          onClick={ this.removeProduct }
+        >
           <i className="fa-solid fa-xmark" />
         </button>
         <img src={ thumbnail } alt={ title } />
+        <p
+          data-testid="shopping-cart-product-name"
+        >
+          { title }
+        </p>
         <label htmlFor="minus">
           {' '}
           <i className="fa-solid fa-minus" />
@@ -61,7 +76,11 @@ export default class CartProduct extends Component {
             data-testid="product-increase-quantity"
           />
         </label>
-        <p>{ price }</p>
+        <p>
+          <span data-testid="shopping-cart-product-quantity">{ quantity }</span>
+          x
+          <span>{ price }</span>
+        </p>
       </div>
     );
   }
@@ -71,5 +90,5 @@ CartProduct.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  // id: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };

@@ -11,6 +11,7 @@ class Main extends Component {
     inputSearch: '',
     products: [],
     actCat: '',
+    cart: [],
   };
 
   componentDidMount() {
@@ -42,16 +43,24 @@ class Main extends Component {
     this.setState({ products: results });
   };
 
+  addToCart = ({ target }) => {
+    const { products } = this.state;
+    const product = products.find(({ id }) => id === target.id);
+    this.setState((prevState) => ({
+      cart: [...prevState.cart, product],
+    }), () => {
+      const { cart } = this.state;
+      localStorage.setItem('cartItems', JSON.stringify(cart));
+    });
+  };
+
   render() {
     const { categories, inputSearch, products } = this.state;
-    const showProducts = products.map(({ thumbnail, title, price, id,
-    }) => (
+    const showProducts = products.map((product) => (
       <ProductCard
-        key={ id }
-        thumbnail={ thumbnail }
-        title={ title }
-        price={ price }
-        id={ id }
+        key={ product.id }
+        product={ product }
+        addToCart={ this.addToCart }
       />
     ));
 
@@ -84,15 +93,6 @@ class Main extends Component {
             categories={ categories }
             fetchCategory={ this.fetchCategoriesProduct }
           />
-          {/* <ul>
-          {products.length > 0
-            ? products.map((productCard) => (
-              <ProductCard
-                key={ productCard }
-                product={ productCard }
-              />))
-            : 'Digite algu´m termo de pesquisa ou escolha uma categoria.'}
-        </ul> */}
         </form>
         {products.length ? <ul>{showProducts}</ul> : <p>Nenhum produto foi encontrado</p>}
         <div>
