@@ -16,9 +16,9 @@ class ProductCard extends Component {
             <p>
               { price }
             </p>
-            {/* <button type="button">
+            <button type="button">
               Adicionar ao carrinho
-            </button> */}
+            </button>
           </li>
         </Link>
       </span>
