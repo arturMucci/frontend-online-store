@@ -51,15 +51,13 @@ class Main extends Component {
         thumbnail={ thumbnail }
         title={ title }
         price={ price }
+        id={ id }
       />
     ));
 
     return (
       <div>
-        <Categories
-          categories={ categories }
-          fetchCategory={ this.fetchCategoriesProduct }
-        />
+
         <form>
           <label htmlFor="home-initial-message">
             <input
@@ -82,6 +80,10 @@ class Main extends Component {
           <p data-testid="home-initial-message">
             Digite algum termo de pesquisa ou escolha uma categoria.
           </p>
+          <Categories
+            categories={ categories }
+            fetchCategory={ this.fetchCategoriesProduct }
+          />
           {/* <ul>
           {products.length > 0
             ? products.map((productCard) => (
