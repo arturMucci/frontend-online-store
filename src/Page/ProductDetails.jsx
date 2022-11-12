@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -5,9 +6,7 @@ import { getProductById } from '../services/api';
 
 export default class ProductDetails extends Component {
   state = {
-    title: '',
-    price: '',
-    thumbnail: '',
+    product: {},
   };
 
   componentDidMount() {
@@ -16,19 +15,20 @@ export default class ProductDetails extends Component {
   }
 
   getProduct = async (id) => {
-    // const { param } = this.props;
     const product = await getProductById(id);
-    console.log(product);
-
     this.setState({
-      title: product.title,
-      price: product.price,
-      thumbnail: product.thumbnail,
+      product,
     });
   };
 
+  addProductToCart = () => {
+    const { product } = this.state;
+    const cart = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    localStorage.setItem('cartItems', JSON.stringify([...cart, product]));
+  };
+
   render() {
-    const { title, price, thumbnail } = this.state;
+    const { product: { title, price, thumbnail } } = this.state;
 
     return (
       <div>
@@ -37,6 +37,15 @@ export default class ProductDetails extends Component {
         <p data-testid="product-detail-price">
           { price }
         </p>
+        <button
+          data-testid="product-detail-add-to-cart"
+          id="button-add-to-cart"
+          name="button-add-to-cart"
+          type="button"
+          onClick={ this.addProductToCart }
+        >
+          Adicionar ao carrinho
+        </button>
         <div>
           <Link to="/cart" data-testid="shopping-cart-button">
             <i className="fa-solid fa-cart-shopping" />
