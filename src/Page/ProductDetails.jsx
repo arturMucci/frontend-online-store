@@ -15,10 +15,7 @@ export default class ProductDetails extends Component {
   }
 
   getProduct = async (id) => {
-    // const { param } = this.props;
     const product = await getProductById(id);
-    console.log(product);
-
     this.setState({
       product,
     });
