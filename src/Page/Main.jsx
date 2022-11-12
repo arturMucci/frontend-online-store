@@ -16,6 +16,7 @@ class Main extends Component {
 
   componentDidMount() {
     this.fetchGetCategories();
+    this.updateCartStorage();
   }
 
   fetchGetCategories = async () => {
@@ -41,6 +42,13 @@ class Main extends Component {
     const { value } = e.target;
     const { results } = await getProductsFromCategoryAndQuery(value);
     this.setState({ products: results });
+  };
+
+  updateCartStorage = () => {
+    const storage = localStorage.getItem('cartItems');
+    if (storage) {
+      this.setState({ cart: JSON.parse(storage) });
+    }
   };
 
   addToCart = ({ target }) => {
@@ -94,12 +102,12 @@ class Main extends Component {
             fetchCategory={ this.fetchCategoriesProduct }
           />
         </form>
-        {products.length ? <ul>{showProducts}</ul> : <p>Nenhum produto foi encontrado</p>}
         <div>
           <Link to="/cart" data-testid="shopping-cart-button">
             <i className="fa-solid fa-cart-shopping" />
           </Link>
         </div>
+        {products.length ? <ul>{showProducts}</ul> : <p>Nenhum produto foi encontrado</p>}
       </div>
     );
   }

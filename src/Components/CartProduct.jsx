@@ -21,9 +21,14 @@ export default class CartProduct extends Component {
     }
   };
 
-  // removeProduct = ({ target }) => {
-  //   // const prodFiltered =
-  // };
+  removeProduct = ({ target }) => {
+    const { updateItems } = this.props;
+    const { value } = target;
+    const cartItemsSaved = JSON.parse(localStorage.getItem('cartItems'));
+    const newCartItems = cartItemsSaved.filter((item) => item.id !== value);
+    localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+    updateItems(newCartItems);
+  };
 
   render() {
     const { quantity } = this.state;
@@ -34,10 +39,11 @@ export default class CartProduct extends Component {
           type="button"
           className="btn-remove"
           data-testid="remove-product"
-          id={ id }
+          value={ id }
           onClick={ this.removeProduct }
         >
-          <i className="fa-solid fa-xmark" />
+          X
+          {/* <i className="fa-solid fa-xmark" /> */}
         </button>
         <img src={ thumbnail } alt={ title } />
         <p
@@ -91,4 +97,5 @@ CartProduct.propTypes = {
   title: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
-};
+  updateItems: PropTypes.func,
+}.isRequired;

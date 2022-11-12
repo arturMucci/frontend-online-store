@@ -14,9 +14,17 @@ export default class Card extends Component {
     }
   }
 
+  updateItems = (obj) => {
+    this.setState({ products: obj });
+  };
+
   productsList = () => {
     const { products } = this.state;
-    return products.map((product) => <CartProduct key={ product.id } { ...product } />);
+    return products.map((product) => (<CartProduct
+      { ...product }
+      key={ product.id }
+      updateItems={ this.updateItems }
+    />));
   };
 
   render() {
