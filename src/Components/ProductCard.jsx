@@ -5,11 +5,17 @@ import { Link } from 'react-router-dom';
 class ProductCard extends Component {
   render() {
     const { product, addToCart, isCheckout } = this.props;
-    const { thumbnail, title, price, id } = product;
+    const {
+      thumbnail,
+      title,
+      price,
+      id,
+      shipping: { free_shipping: freeShipping } = {} } = product;
     const ConditionalLink = isCheckout ? React.Fragment : Link;
 
     return (
       <span>
+        {freeShipping && <p data-testid="free-shipping">Frete Grátis!</p>}
         <ConditionalLink to={ `/productdetails/${id}` } data-testid="product-detail-link">
           <div data-testid="product">
             <h4>
@@ -46,6 +52,9 @@ ProductCard.propTypes = {
     title: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
+    shipping: PropTypes.shape({
+      free_shipping: PropTypes.bool.isRequired,
+    }).isRequired,
   }).isRequired,
   addToCart: PropTypes.func.isRequired,
   isCheckout: PropTypes.bool.isRequired,

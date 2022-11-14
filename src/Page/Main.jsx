@@ -71,10 +71,8 @@ class Main extends Component {
         addToCart={ this.addToCart }
       />
     ));
-
     return (
       <div>
-
         <form>
           <label htmlFor="home-initial-message">
             <input
