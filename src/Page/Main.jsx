@@ -55,14 +55,23 @@ class Main extends Component {
   };
 
   addToCart = ({ target }) => {
-    const { products } = this.state;
+    const { products, cart } = this.state;
     const product = products.find(({ id }) => id === target.id);
-    this.setState((prevState) => ({
-      cart: [...prevState.cart, product],
-    }), () => {
-      const { cart } = this.state;
-      localStorage.setItem('cartItems', JSON.stringify(cart));
-    });
+    const containProduct = cart.some((item) => item.id === product.id);
+    if (containProduct) {
+      if (product.available_quantity >= product.quantity) {
+        product.quantity += 1;
+        localStorage.setItem('cartItems', JSON.stringify(cart));
+      }
+    } else {
+      product.quantity = 1;
+      this.setState((prevState) => ({
+        cart: [...prevState.cart, product],
+      }), () => {
+        const { cart: newCartItems } = this.state;
+        localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+      });
+    }
   };
 
   render() {
