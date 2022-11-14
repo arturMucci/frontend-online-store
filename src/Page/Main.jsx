@@ -73,39 +73,46 @@ class Main extends Component {
     ));
     return (
       <div>
-        <form>
-          <label htmlFor="home-initial-message">
-            <input
-              onChange={ this.handleChange }
-              placeholder="Search"
-              value={ inputSearch }
-              type="text"
-              id="home-initial-message"
-              data-testid="query-input"
-            />
-            <button
-              className="searchButton"
-              type="button"
-              data-testid="query-button"
-              onClick={ this.productsAPI }
-            >
-              Search
-            </button>
-          </label>
-          <p data-testid="home-initial-message">
-            Digite algum termo de pesquisa ou escolha uma categoria.
-          </p>
+        <nav>
+          <form>
+            <label htmlFor="home-initial-message">
+              <input
+                onChange={ this.handleChange }
+                placeholder="Search"
+                value={ inputSearch }
+                type="text"
+                id="home-initial-message"
+                data-testid="query-input"
+              />
+              <button
+                className="searchButton"
+                type="button"
+                data-testid="query-button"
+                onClick={ this.productsAPI }
+              >
+                Search
+              </button>
+            </label>
+          </form>
+          <div>
+            <Link to="/cart" data-testid="shopping-cart-button">
+              <i className="fa-solid fa-cart-shopping" />
+            </Link>
+          </div>
+        </nav>
+        <div className="categories-container">
           <Categories
             categories={ categories }
             fetchCategory={ this.fetchCategoriesProduct }
           />
-        </form>
-        <div>
-          <Link to="/cart" data-testid="shopping-cart-button">
-            <i className="fa-solid fa-cart-shopping" />
-          </Link>
         </div>
-        {products.length ? <ul>{showProducts}</ul> : <p>Nenhum produto foi encontrado</p>}
+        <p data-testid="home-initial-message">
+          Digite algum termo de pesquisa ou escolha uma categoria.
+        </p>
+        <div className="products-list">
+          { products.length ? <ul>{showProducts}</ul>
+            : <p>Nenhum produto foi encontrado</p>}
+        </div>
       </div>
     );
   }
