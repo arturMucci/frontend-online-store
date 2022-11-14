@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
 import '../styles/main.css';
+import logo from '../images/logo.png';
 
 import Categories from '../Components/Categories';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
@@ -75,11 +77,12 @@ class Main extends Component {
     return (
       <div>
         <nav className="nav-content">
-          <form>
+          <form className="form-search">
             <label htmlFor="home-initial-message">
               <input
+                className="search-input"
                 onChange={ this.handleChange }
-                placeholder="Search"
+                placeholder="Digite o que você busca"
                 value={ inputSearch }
                 type="text"
                 id="home-initial-message"
@@ -91,12 +94,16 @@ class Main extends Component {
                 data-testid="query-button"
                 onClick={ this.productsAPI }
               >
-                Search
+                .
               </button>
             </label>
           </form>
-          <div>
+          <div className="logo-content">
+            <img className="logo" alt="logo" src={ logo } />
+          </div>
+          <div className="cart-button">
             <Link to="/cart" data-testid="shopping-cart-button">
+              <p className="cart-counter">9</p>
               <i className="fa-solid fa-cart-shopping" />
             </Link>
           </div>
