@@ -10,7 +10,7 @@ export default class ProductDetails extends Component {
   };
 
   componentDidMount() {
-    const { match: { params: { id } } } = this.props;
+    const { match: { params: { id } = {} } = {} } = this.props;
     this.getProduct(id);
   }
 
@@ -28,10 +28,15 @@ export default class ProductDetails extends Component {
   };
 
   render() {
-    const { product: { title, price, thumbnail } } = this.state;
+    const { product: {
+      title,
+      price,
+      thumbnail,
+      shipping: { free_shipping: freeShipping } = {} } } = this.state;
 
     return (
       <div>
+        {freeShipping && <p data-testid="free-shipping">Frete Grátis!</p>}
         <h4 data-testid="product-detail-name">{ title }</h4>
         <img data-testid="product-detail-image" src={ thumbnail } alt={ title } />
         <p data-testid="product-detail-price">
