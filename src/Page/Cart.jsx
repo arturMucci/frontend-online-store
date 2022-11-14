@@ -1,8 +1,9 @@
 // import PropTypes from 'prop-types'
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CartProduct from '../Components/CartProduct';
 
-export default class Card extends Component {
+class Cart extends Component {
   state = {
     products: [],
   };
@@ -27,6 +28,11 @@ export default class Card extends Component {
     />));
   };
 
+  redirectToCheckout = () => {
+    const { history } = this.props;
+    history.push('/checkout');
+  };
+
   render() {
     const { products } = this.state;
     const emptyCartText = (
@@ -37,7 +43,18 @@ export default class Card extends Component {
       <div>
         { products.length === 0 ? emptyCartText
           : this.productsList()}
+        <button
+          type="button"
+          data-testid="checkout-products"
+          onClick={ this.redirectToCheckout }
+        >
+          Finalizar compra
+        </button>
       </div>
     );
   }
 }
+Cart.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+};
+export default Cart;
