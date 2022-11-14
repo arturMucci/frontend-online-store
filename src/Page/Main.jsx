@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import '../styles/main.css';
 
 import Categories from '../Components/Categories';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
@@ -73,7 +74,7 @@ class Main extends Component {
     ));
     return (
       <div>
-        <nav>
+        <nav className="nav-content">
           <form>
             <label htmlFor="home-initial-message">
               <input

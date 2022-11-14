@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import '../styles/productDetails.css';
 import PropTypes from 'prop-types';
 import { getProductById } from '../services/api';
 
@@ -35,7 +36,7 @@ export default class ProductDetails extends Component {
       shipping: { free_shipping: freeShipping } = {} } } = this.state;
 
     return (
-      <div>
+      <div className="prodDetail-container">
         {freeShipping && <p data-testid="free-shipping">Frete Grátis!</p>}
         <h4 data-testid="product-detail-name">{ title }</h4>
         <img data-testid="product-detail-image" src={ thumbnail } alt={ title } />

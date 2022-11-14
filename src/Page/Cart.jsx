@@ -1,5 +1,5 @@
-// import PropTypes from 'prop-types'
 import React, { Component } from 'react';
+import '../styles/cart.css';
 import PropTypes from 'prop-types';
 import CartProduct from '../Components/CartProduct';
 
@@ -40,7 +40,7 @@ class Cart extends Component {
     );
 
     return (
-      <div>
+      <div className="cart-container">
         { products.length === 0 ? emptyCartText
           : this.productsList()}
         <button
