@@ -66,7 +66,7 @@ class Main extends Component {
   };
 
   render() {
-    const { categories, inputSearch, products } = this.state;
+    const { categories, inputSearch, products, cart } = this.state;
     const showProducts = products.map((product) => (
       <ProductCard
         key={ product.id }
@@ -103,7 +103,12 @@ class Main extends Component {
           </div>
           <div className="cart-button">
             <Link to="/cart" data-testid="shopping-cart-button">
-              <p className="cart-counter">9</p>
+              <p
+                className="cart-counter"
+                data-testid="shopping-cart-size"
+              >
+                { cart.length }
+              </p>
               <i className="fa-solid fa-cart-shopping" />
             </Link>
           </div>
