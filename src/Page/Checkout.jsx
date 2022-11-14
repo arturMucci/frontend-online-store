@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ProductCard from '../Components/ProductCard';
 
@@ -11,29 +11,11 @@ class Checkout extends Component {
     inputCep: '',
     inputAddress: '',
     paymentMethod: '',
-    isDisabled: true,
+    errorMessage: false,
   };
 
-  componentDidUpdate(_prevProps, prevState) {
-    const {
-      inputName,
-      inputEmail,
-      inputCpf,
-      inputAddress,
-      inputCep,
-      inputTel,
-      paymentMethod,
-    } = this.state;
-    if (
-      prevState.inputName !== inputName
-       || prevState.inputEmail !== inputEmail
-       || prevState.inputCpf !== inputCpf
-       || prevState.inputAddress !== inputAddress
-       || prevState.inputCep !== inputCep
-       || prevState.inputTel !== inputTel
-       || prevState.paymentMethod !== paymentMethod) {
-      this.verifySubmitBtn();
-    }
+  componentWillUnmount() {
+    localStorage.setItem('cartItems', '[]');
   }
 
   verifySubmitBtn = () => {
@@ -47,18 +29,21 @@ class Checkout extends Component {
       paymentMethod,
     } = this.state;
 
-    const cpfMinNumber = 11;
+    const filledFields = inputName
+    && inputEmail
+    && inputCpf
+    && inputAddress
+    && inputCep
+    && inputTel
+    && paymentMethod;
 
-    const name = inputName.length;
-    const email = inputEmail.length;
-    const cpf = inputCpf.length >= cpfMinNumber;
-    const address = inputAddress.length;
-    const cep = inputCep.length;
-    const tel = inputTel.length;
-    const payment = paymentMethod.length;
+    const { history } = this.props;
 
-    const conditions = name && email && cpf && address && cep && tel && payment;
-    this.setState({ isDisabled: !conditions });
+    if (!filledFields) {
+      this.setState({ errorMessage: true });
+    } else {
+      history.push('/');
+    }
   };
 
   handleChange = ({ target }) => {
@@ -78,7 +63,7 @@ class Checkout extends Component {
       inputCep,
       inputTel,
       paymentMethod,
-      isDisabled,
+      errorMessage,
     } = this.state;
     return (
       <div>
@@ -93,6 +78,7 @@ class Checkout extends Component {
           )
         }
         <form>
+          {errorMessage && <p data-testid="error-msg">Campos inválidos</p>}
           <label
             htmlFor="checkout-fullname"
           >
@@ -104,6 +90,7 @@ class Checkout extends Component {
               data-testid="checkout-fullname"
               value={ inputName }
               onChange={ this.handleChange }
+              required
             />
           </label>
           <label
@@ -117,6 +104,7 @@ class Checkout extends Component {
               data-testid="checkout-email"
               value={ inputEmail }
               onChange={ this.handleChange }
+              required
             />
           </label>
           <label
@@ -130,6 +118,7 @@ class Checkout extends Component {
               data-testid="checkout-cpf"
               value={ inputCpf }
               onChange={ this.handleChange }
+              required
             />
           </label>
           <label
@@ -143,6 +132,7 @@ class Checkout extends Component {
               data-testid="checkout-phone"
               value={ inputTel }
               onChange={ this.handleChange }
+              required
             />
           </label>
           <label
@@ -156,6 +146,7 @@ class Checkout extends Component {
               data-testid="checkout-cep"
               value={ inputCep }
               onChange={ this.handleChange }
+              required
             />
           </label>
           <label
@@ -169,6 +160,7 @@ class Checkout extends Component {
               data-testid="checkout-address"
               value={ inputAddress }
               onChange={ this.handleChange }
+              required
             />
           </label>
           <div>
@@ -183,6 +175,7 @@ class Checkout extends Component {
                 name="paymentMethod"
                 checked={ paymentMethod === 'boleto' }
                 onChange={ this.handleChange }
+                required
               />
             </label>
             <br />
@@ -196,6 +189,7 @@ class Checkout extends Component {
                 name="paymentMethod"
                 checked={ paymentMethod === 'visa' }
                 onChange={ this.handleChange }
+                required
               />
             </label>
             <br />
@@ -209,6 +203,7 @@ class Checkout extends Component {
                 name="paymentMethod"
                 checked={ paymentMethod === 'master' }
                 onChange={ this.handleChange }
+                required
               />
             </label>
             <br />
@@ -222,13 +217,14 @@ class Checkout extends Component {
                 name="paymentMethod"
                 checked={ paymentMethod === 'elo' }
                 onChange={ this.handleChange }
+                required
               />
             </label>
           </div>
           <button
             data-testid="checkout-btn"
             type="submit"
-            disabled={ isDisabled }
+            onClick={ this.verifySubmitBtn }
           >
             Comprar
           </button>
@@ -237,5 +233,7 @@ class Checkout extends Component {
     );
   }
 }
-
+Checkout.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+};
 export default Checkout;
