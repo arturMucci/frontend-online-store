@@ -30,22 +30,14 @@ export default class ProductDetails extends Component {
   };
 
   addToCart = () => {
-    const { product, cart } = this.state;
-    const containProduct = cart.some((item) => item.id === product.id);
-    if (containProduct) {
-      if (product.available_quantity >= product.quantity) {
-        product.quantity += 1;
-        localStorage.setItem('cartItems', JSON.stringify(cart));
-      }
-    } else {
-      product.quantity = 1;
-      this.setState((prevState) => ({
-        cart: [...prevState.cart, product],
-      }), () => {
-        const { cart: newCartItems } = this.state;
-        localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-      });
-    }
+    const { product } = this.state;
+    product.quantity += 1;
+    this.setState((prevState) => ({
+      cart: [...prevState.cart, product],
+    }), () => {
+      const { cart: newCartItems } = this.state;
+      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+    });
   };
 
   render() {

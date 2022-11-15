@@ -9,11 +9,27 @@ class Cart extends Component {
   };
 
   componentDidMount() {
-    const storage = JSON.parse(localStorage.getItem('cartItems'));
-    if (storage) {
-      this.setState({ products: storage });
-    }
+    this.getSavedItems();
   }
+
+  getSavedItems = () => {
+    const storage = JSON.parse(localStorage.getItem('cartItems')) || [];
+    // Minha lógica era verificar os objetos que se repetem e adicionar a quatidade de repetição como atributo
+    // No final, retornar um novo array sem produtos repetidos e com o numero de quantidade como atributo
+    // Não consegui fazer mas aqui fica um código que eu tava tentando
+
+    // const filtered = storage.map((item) => {
+    //   const equalObjs = storage.filter((itemFilt) => itemFilt.id === item.id).length > 1;
+    //   if (equalObjs) {
+    //     item.quantity += 1;
+    //     return item;
+    //   }
+    //   return item;
+    // });
+    // console.log(filtered);
+
+    this.setState({ products: storage });
+  };
 
   updateItems = (obj) => {
     this.setState({ products: obj });

@@ -55,23 +55,36 @@ class Main extends Component {
   };
 
   addToCart = ({ target }) => {
-    const { products, cart } = this.state;
+    const { products } = this.state;
     const product = products.find(({ id }) => id === target.id);
-    const containProduct = cart.some((item) => item.id === product.id);
-    if (containProduct) {
-      if (product.available_quantity >= product.quantity) {
-        product.quantity += 1;
-        localStorage.setItem('cartItems', JSON.stringify(cart));
-      }
-    } else {
-      product.quantity = 1;
-      this.setState((prevState) => ({
-        cart: [...prevState.cart, product],
-      }), () => {
-        const { cart: newCartItems } = this.state;
-        localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-      });
-    }
+
+    // Essa era minha lógica para não repetir produto no carrinho e acrescentar o atributo quantidade
+    // Funciona, mas tive que comentar para o teste funcionar
+    // Pelo jeito tem que reduzir o numero de produtos iguais dentro da renderização do carrinho, não consegui fazer.
+
+    // const containProduct = cart.some((item) => item.id === product.id);
+    // if (containProduct) {
+    //   if (product.available_quantity >= product.quantity) {
+    //     product.quantity += 1;
+    //     localStorage.setItem('cartItems', JSON.stringify(cart));
+    //   }
+    // } else {
+    //   product.quantity = 1;
+    //   this.setState((prevState) => ({
+    //     cart: [...prevState.cart, product],
+    //   }), () => {
+    //     const { cart: newCartItems } = this.state;
+    //     localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+    //   });
+    // }
+
+    product.quantity += 1;
+    this.setState((prevState) => ({
+      cart: [...prevState.cart, product],
+    }), () => {
+      const { cart: newCartItems } = this.state;
+      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+    });
   };
 
   render() {
