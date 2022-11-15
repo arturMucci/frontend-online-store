@@ -7,6 +7,11 @@ export default class CartProduct extends Component {
     quantity: '1',
   };
 
+  componentDidMount() {
+    // const { quantity } = this.props;
+    // this.setState({ quantity });
+  }
+
   handleAmount = ({ target }) => {
     const { id } = target;
     const { quantity } = this.state;
