@@ -7,12 +7,18 @@ export default class CartProduct extends Component {
     quantity: '1',
   };
 
+  componentDidMount() {
+    // const { quantity } = this.props;
+    // this.setState({ quantity });
+  }
+
   handleAmount = ({ target }) => {
+    const { available_quantity: availableQuantity } = this.props;
     const { id } = target;
     const { quantity } = this.state;
     if (id === 'minus' && Number(quantity) > 1) {
       this.setState({ quantity: Number(quantity) - 1 });
-    } else if (id === 'plus') {
+    } else if (id === 'plus' && quantity < availableQuantity) {
       this.setState({ quantity: Number(quantity) + 1 });
     }
     if (id === 'quantityProd' && Number(quantity) >= 1) {

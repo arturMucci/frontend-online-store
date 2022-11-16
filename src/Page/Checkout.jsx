@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import '../styles/checkout.css';
 import ProductCard from '../Components/ProductCard';
 
 class Checkout extends Component {
@@ -66,7 +67,7 @@ class Checkout extends Component {
       errorMessage,
     } = this.state;
     return (
-      <div>
+      <div className="checkout-container">
         {
           cartProducts.map(
             (product) => (

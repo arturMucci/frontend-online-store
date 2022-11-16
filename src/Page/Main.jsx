@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import '../styles/main.css';
+import logo from '../images/logo.png';
+
 import Categories from '../Components/Categories';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from '../Components/ProductCard';
@@ -54,16 +57,38 @@ class Main extends Component {
   addToCart = ({ target }) => {
     const { products } = this.state;
     const product = products.find(({ id }) => id === target.id);
+
+    // Essa era minha lógica para não repetir produto no carrinho e acrescentar o atributo quantidade
+    // Funciona, mas tive que comentar para o teste funcionar
+    // Pelo jeito tem que reduzir o numero de produtos iguais dentro da renderização do carrinho, não consegui fazer.
+
+    // const containProduct = cart.some((item) => item.id === product.id);
+    // if (containProduct) {
+    //   if (product.available_quantity >= product.quantity) {
+    //     product.quantity += 1;
+    //     localStorage.setItem('cartItems', JSON.stringify(cart));
+    //   }
+    // } else {
+    //   product.quantity = 1;
+    //   this.setState((prevState) => ({
+    //     cart: [...prevState.cart, product],
+    //   }), () => {
+    //     const { cart: newCartItems } = this.state;
+    //     localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+    //   });
+    // }
+
+    product.quantity += 1;
     this.setState((prevState) => ({
       cart: [...prevState.cart, product],
     }), () => {
-      const { cart } = this.state;
-      localStorage.setItem('cartItems', JSON.stringify(cart));
+      const { cart: newCartItems } = this.state;
+      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     });
   };
 
   render() {
-    const { categories, inputSearch, products } = this.state;
+    const { categories, inputSearch, products, cart } = this.state;
     const showProducts = products.map((product) => (
       <ProductCard
         key={ product.id }
@@ -73,39 +98,56 @@ class Main extends Component {
     ));
     return (
       <div>
-        <form>
-          <label htmlFor="home-initial-message">
-            <input
-              onChange={ this.handleChange }
-              placeholder="Search"
-              value={ inputSearch }
-              type="text"
-              id="home-initial-message"
-              data-testid="query-input"
-            />
-            <button
-              className="searchButton"
-              type="button"
-              data-testid="query-button"
-              onClick={ this.productsAPI }
-            >
-              Search
-            </button>
-          </label>
-          <p data-testid="home-initial-message">
-            Digite algum termo de pesquisa ou escolha uma categoria.
-          </p>
+        <nav className="nav-content">
+          <form className="form-search">
+            <label htmlFor="home-initial-message">
+              <input
+                className="search-input"
+                onChange={ this.handleChange }
+                placeholder="Digite o que você busca"
+                value={ inputSearch }
+                type="text"
+                id="home-initial-message"
+                data-testid="query-input"
+              />
+              <button
+                className="searchButton"
+                type="button"
+                data-testid="query-button"
+                onClick={ this.productsAPI }
+              >
+                .
+              </button>
+            </label>
+          </form>
+          <div className="logo-content">
+            <img className="logo" alt="logo" src={ logo } />
+          </div>
+          <div className="cart-button">
+            <Link to="/cart" data-testid="shopping-cart-button">
+              <p
+                className="cart-counter"
+                data-testid="shopping-cart-size"
+              >
+                { cart.length }
+              </p>
+              <i className="fa-solid fa-cart-shopping" />
+            </Link>
+          </div>
+        </nav>
+        <div className="categories-container">
           <Categories
             categories={ categories }
             fetchCategory={ this.fetchCategoriesProduct }
           />
-        </form>
-        <div>
-          <Link to="/cart" data-testid="shopping-cart-button">
-            <i className="fa-solid fa-cart-shopping" />
-          </Link>
         </div>
-        {products.length ? <ul>{showProducts}</ul> : <p>Nenhum produto foi encontrado</p>}
+        <p data-testid="home-initial-message">
+          Digite algum termo de pesquisa ou escolha uma categoria.
+        </p>
+        <div className="products-list">
+          { products.length ? <ul>{showProducts}</ul>
+            : <p>Nenhum produto foi encontrado</p>}
+        </div>
       </div>
     );
   }
